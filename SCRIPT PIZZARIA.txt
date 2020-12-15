@@ -111,4 +111,13 @@ INSERT INTO pizza (NULL,'MUSSARELA','PEQUENA',10.00),(NULL,'MUSSARELA','GRANDE',
 (NULL,'FRANGO CATUPIRY','PEQUENA',12.00),(NULL,'FRANGO CATUPIRY','GRANDE',26.00),(NULL,'FRANGO CATUPIRY','FAMILIA',51.00),
 (NULL,'HAVAIANA','PEQUENA',12.00),(NULL,'HAVAIANA','GRANDE',24.00),(NULL,'HAVAIANA','FAMILIA',50.00);
 
+--------------------------- ANOTAÇÕES -------------------------------
 EXERCICIO - CARDAPIO COMPLETO E UM PEDIDO COMPLETO
+
+1. Carne moída: muçarela, tomate, sal e orégano.
+2. Margherita: molho de tomate, mussarela de búfala, manjericão, queijo parmesão ralado e azeite
+3. Bacon : muçarela
+4. Portuguesa : calabresa, tomates, muçarela, cebolas e azeitonas pretas
+5. Muçarela : muçarela, gorgonzola, requeijão e parmesão
+6. Frango Catupiry : molho de tomate, queijo muçarela, milho verde, pimentão, azeitonas e orégano
+7. Havaiana : muçarela, camarão, bacon e abacaxi
