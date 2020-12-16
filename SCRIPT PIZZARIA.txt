@@ -1,4 +1,4 @@
-CREATE DATABASE pizzaria;
+CREATE DATABASE pizzaria;1
 USE pizzaria;
 
 CREATE TABLE bairro(
