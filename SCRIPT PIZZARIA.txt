@@ -1,11 +1,13 @@
-CREATE DATABASE pizzaria;1
+-- SCRIPTS DE CRIAÇÃO --------
+
+CREATE DATABASE IF NOT EXISTS `pizzaria` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE pizzaria;
 
 CREATE TABLE bairro(
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 nome VARCHAR(40) NOT NULL,
 tempo INT NOT NULL
-);
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE endereco(
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -15,19 +17,19 @@ ponto_referencia VARCHAR(100),
 cep VARCHAR(15),
 id_bairro INT NOT NULL,
 FOREIGN KEY (id_bairro) REFERENCES bairro(id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE cliente(
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 nome VARCHAR(40) NOT NULL,
 id_endereco INT NOT NULL,
 FOREIGN KEY (id_endereco) REFERENCES endereco(id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE funcao(
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 nome VARCHAR(40) NOT NULL
-);
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE funcionario(
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -35,19 +37,19 @@ nome VARCHAR(40) NOT NULL,
 celular VARCHAR(15) NOT NULL,
 id_funcao INT NOT NULL,
 FOREIGN KEY (id_funcao) REFERENCES funcao(id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE ingrediente(
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 nome VARCHAR(40) NOT NULL
-);
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE pizza(
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 nome VARCHAR(40) NOT NULL,
 tamanho VARCHAR(10) NOT NULL,
 preco NUMERIC(4,2) NOT NULL
-);
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE ingrediente_pizza(
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -55,25 +57,25 @@ id_pizza INT NOT NULL,
 id_ingrediente INT NOT NULL,
 FOREIGN KEY (id_pizza) REFERENCES pizza(id),
 FOREIGN KEY (id_ingrediente) REFERENCES ingrediente(id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE cardapio(
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 nome VARCHAR(40) NOT NULL,
 id_pizza INT NOT NULL,
 FOREIGN KEY (id_pizza) REFERENCES pizza(id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE pedido(
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-data_emissao DATE NOT NULL DEFAULT CURRENT_DATETIME,
+data_emissao DATE NOT NULL DEFAULT now(),
 id_cliente INT NOT NULL,
 id_atendente INT NOT NULL,
 id_entregador INT,
 FOREIGN KEY (id_cliente) REFERENCES cliente(id),
 FOREIGN KEY (id_atendente) REFERENCES funcionario(id),
 FOREIGN KEY (id_entregador) REFERENCES funcionario(id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 CREATE TABLE itempedido(
@@ -83,7 +85,10 @@ id_pedido INT NOT NULL,
 id_pizza INT NOT NULL,
 FOREIGN KEY (id_pizza) REFERENCES pizza(id),
 FOREIGN KEY (id_pedido) REFERENCES pedido(id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ************************************
+-- SCRIPTS DE INSERT ---------------------------------
 
 INSERT INTO bairro VALUES (NULL,'CENTRO', 20),(NULL,'ALVORADA', 40),(NULL,'PONTA NEGRA', 50),(NULL,'CIDADE NOVA', 60),(NULL,'SÃO JOSÉ', 50),(NULL,'JAPIIM', 40);
 
@@ -119,6 +124,19 @@ INSERT INTO cardapio VALUES (NULL,'CARDAPIO 2020',1),(NULL,'CARDAPIO 2020',2),(N
 (NULL,'CARDAPIO 2020',7),(NULL,'CARDAPIO 2020',8),(NULL,'CARDAPIO 2020',9),
 (NULL,'CARDAPIO 2020',10),(NULL,'CARDAPIO 2020',11),(NULL,'CARDAPIO 2020',12);
 
+-- ***************** ACOMPANHAMENTO PEDIDOS **********************
+
+CREATE VIEW acompanhamento_pedido AS
+SELECT p.id,data_emissao as data_pedido, c.nome as cliente,
+pi.nome as pizza, pi.tamanho, i.qtd as qtd, pi.preco as preco,i.qtd*pi.preco as valor_total,
+f1.nome as atendente, f2.nome as entregador, f2.celular as entregador_celular 
+FROM pedido p
+JOIN cliente c ON c.id = p.id_cliente
+JOIN funcionario f1 ON f1.id = p.id_atendente
+JOIN funcionario f2 ON f2.id = p.id_entregador
+JOIN itempedido i ON i.id_pedido = p.id
+JOIN pizza pi ON pi.id = i.id_pizza
+ORDER BY p.id, p.data_emissao;
 
 --------------------------- ANOTAÇÕES -------------------------------
 EXERCICIO - CARDAPIO COMPLETO E UM PEDIDO COMPLETO
