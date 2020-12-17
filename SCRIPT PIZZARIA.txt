@@ -126,6 +126,8 @@ INSERT INTO cardapio VALUES (NULL,'CARDAPIO 2020',1),(NULL,'CARDAPIO 2020',2),(N
 
 -- ***************** ACOMPANHAMENTO PEDIDOS **********************
 
+1) ACOMPANHAMENTO DOS PEDIDOS
+
 CREATE VIEW acompanhamento_pedido AS
 SELECT p.id,data_emissao as data_pedido, c.nome as cliente,
 pi.nome as pizza, pi.tamanho, i.qtd as qtd, pi.preco as preco,i.qtd*pi.preco as valor_total,
@@ -137,6 +139,19 @@ JOIN funcionario f2 ON f2.id = p.id_entregador
 JOIN itempedido i ON i.id_pedido = p.id
 JOIN pizza pi ON pi.id = i.id_pizza
 ORDER BY p.id, p.data_emissao;
+
+2) CARDAPIO DE PIZZAS
+
+CREATE VIEW cardapio_pizzaria as
+SELECT c.nome as cardapio, p.nome as sabor_pizza,
+p.tamanho, p.preco, group_concat(g.nome) as ingredientes
+FROM cardapio c
+JOIN pizza p ON p.id = c.id_pizza
+JOIN ingrediente_pizza i ON i.id_pizza = p.id
+JOIN ingrediente g ON g.id = i.id_ingrediente
+group by p.id
+order by p.nome;
+
 
 --------------------------- ANOTAÇÕES -------------------------------
 EXERCICIO - CARDAPIO COMPLETO E UM PEDIDO COMPLETO
