@@ -129,7 +129,9 @@ INSERT INTO cardapio VALUES (NULL,'CARDAPIO 2020',1),(NULL,'CARDAPIO 2020',2),(N
 1) ACOMPANHAMENTO DOS PEDIDOS
 
 CREATE VIEW acompanhamento_pedido AS
-SELECT p.id,data_emissao as data_pedido, c.nome as cliente,
+SELECT p.id,
+DATE_FORMAT(p.data_emissao, '%d/%m/%Y') AS data_pedido,
+c.nome as cliente,
 pi.nome as pizza, pi.tamanho, i.qtd as qtd, pi.preco as preco,i.qtd*pi.preco as valor_total,
 f1.nome as atendente, f2.nome as entregador, f2.celular as entregador_celular 
 FROM pedido p
