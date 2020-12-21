@@ -1,4 +1,4 @@
-11-- SCRIPTS DE CRIAÇÃO --------
+-- SCRIPTS DE CRIAÇÃO --------
 
 CREATE DATABASE IF NOT EXISTS `pizzaria` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE pizzaria;
